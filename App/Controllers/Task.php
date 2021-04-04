@@ -13,11 +13,13 @@ use App\Models\Task as TaskModel;
 class Task extends Controller
 {
 
-
     public function get(){
-        $page = $_GET['page'] ?? 1;
 
-        $data = TaskModel::getTasks((int)$page);
+        $page = $_GET['page'] ?? 1;
+        $orderBy = $_GET['order_by'] ?? 'id';
+        $orderDirection = $_GET['order_direction'] ?? 'DESC';
+
+        $data = TaskModel::getTasks((int)$page, $orderBy, $orderDirection);
 
         $this->showJson($data);
 

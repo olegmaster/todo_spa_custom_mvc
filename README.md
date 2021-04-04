@@ -1,6 +1,9 @@
 To deploy app
+
 run composer install
+
 create database and import from /spa_task.sql
+
 set up database user password in App/Config.php
 
 

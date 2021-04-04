@@ -16,10 +16,12 @@ class Task extends Model
     /**
      * Get all the tasks as an associative array
      *
-     * @param $page
+     * @param int $page
+     * @param string $orderBy
+     * @param string $orderDirection
      * @return array
      */
-    public static function getTasks(int $page)
+    public static function getTasks(int $page, string $orderBy = 'id', string $orderDirection = 'DESC')
     {
 
         $db = static::getDB();
@@ -41,7 +43,9 @@ class Task extends Model
             'per_page' => self::PAGE_ITEMS_COUNT,
         ];
 
-        $stmt = $db->query('SELECT * FROM tasks LIMIT ' . self::PAGE_ITEMS_COUNT . ' OFFSET ' . (($page - 1) * self::PAGE_ITEMS_COUNT));
+        $order = in_array($orderBy, ['id', 'username', 'email', 'text', 'is_completed']) ? $orderBy : 'id';
+        $direction = in_array($orderDirection, ['DESC', 'ASC']) ? $orderDirection : 'DESC';
+        $stmt = $db->query("SELECT * FROM tasks ORDER BY $order $direction LIMIT " . self::PAGE_ITEMS_COUNT . ' OFFSET ' . (($page - 1) * self::PAGE_ITEMS_COUNT));
         $data = (array)$stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
